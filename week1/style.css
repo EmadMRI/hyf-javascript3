@@ -1,0 +1,19 @@
+#root{
+    margin-top: 20px;
+}
+
+#root .navbar{
+    margin-bottom: 20px;
+}
+
+#contributions img
+{
+    max-width: 50px;
+    border-radius: 0.5em;
+    margin: 10px
+}
+
+#contributions > lable > span
+{
+    margin: 10px;
+}
