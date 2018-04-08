@@ -12,18 +12,10 @@ function main() {
     const updated  = document.getElementById('updated ')
     const contributions  = document.getElementById('contributions')
   
-
-fetchJSON(url, (error, data) => {
-    if(error !== null){
-        console.error(error.message)
-    }
-    else{
-        createSelect(data)
-    }
- });
-}
-
-
+fetchJSON(url)
+    .then(data => createSelect(data))
+    .catch(err => renderError(err)); 
+ };
  
 function  createSelect(data){  
     // const select = createAndAppend('select', selectContainer)
@@ -58,18 +50,15 @@ function filterData(data, value){
 
     let url = result[0].contributors_url
 
-    fetchJSON(url, (error, dataContributions) => {
-        if(error !== null){
-            console.error(error.message)
-        }
-        else{
-            contributions.innerHTML = ''
-            getContributionsData(dataContributions)
-        }
-     });
+    fetchJSON(url)
+    .then(data => 
+        getContributionsData(data))
+    .catch(err => renderError(err)); 
+
 }
 
 function getContributionsData(dataContributions){ 
+       contributions.innerHTML = ''
         const lable  = createAndAppend('lable', contributions) 
         lable.innerHTML = 'Contributions'
         const spanCount  = createAndAppend('span', lable )
@@ -102,9 +91,9 @@ function createAndAppend(tagName, parent) {
     return element;
 }
 
-//cb(error, data)
-function fetchJSON(url, callBack) {
-
+ 
+function fetchJSON(url) {
+    return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
     xhr.open("GET", url);
     xhr.responseType = "json";
@@ -112,15 +101,18 @@ function fetchJSON(url, callBack) {
     xhr.onreadystatechange = () => {
         if (xhr.readyState === 4) {
             if (xhr.status < 400) {
-                callBack(null, xhr.response)
+                resolve(xhr.response)
                 
             } else {
-                callBack(new Error(xhr.statusText));
+                reject(new Error( xhr.status + ' ' + xhr.statusText));
             }
         }
     }
     xhr.send();
+});
+
 }
+
 
 
 window.onload = main;

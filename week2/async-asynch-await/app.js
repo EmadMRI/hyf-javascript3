@@ -23,8 +23,6 @@ fetchJSON(url, (error, data) => {
  });
 }
 
-
- 
 function  createSelect(data){  
     // const select = createAndAppend('select', selectContainer)
     const select = document.getElementById('inlineFormCustomSelect');
@@ -93,7 +91,6 @@ function getContributionsData(dataContributions){
         spanCon.innerHTML = element.contributions
     })
 }
-
 
 //create HTML tag and append it
 function createAndAppend(tagName, parent) {
